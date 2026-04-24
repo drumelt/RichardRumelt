@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Richard Rumelt</title>
+  <meta name="description" content="Books, articles, Substack, and the document archive of Richard Rumelt's writings." />
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="canonical" href="https://www.richardrumelt.com/portfolio.html" />
+  <style>
+    .portfolio-intro {
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+    .portfolio-intro p {
+      font-family: var(--font-main);
+      font-size: 1em;
+      color: var(--color-slate);
+      line-height: 1.7;
+    }
+    @media (max-width: 600px) {
+      .portfolio-intro p { line-height: 1.55; }
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .portfolio-card {
+      display: block;
+      background-color: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 1.35rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .portfolio-card:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      border-color: var(--color-accent-light);
+    }
+    .portfolio-card h2 {
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      margin-bottom: 0.35rem;
+    }
+    .portfolio-card p {
+      font-family: var(--font-main);
+      font-size: 1em;
+      color: var(--color-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .portfolio-card .go {
+      font-family: var(--font-main);
+      font-size: 1em;
+      color: var(--color-accent);
+      margin-top: 0.75rem;
+      font-weight: 600;
+    }
+    @media (max-width: 640px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <p class="site-banner">Richard P. Rumelt</p>
+  <nav class="nav-top" aria-label="Primary">
+    <a href="about.html">About</a>
+    <a href="index.html">Services</a>
+    <a href="books.html" class="active">Portfolio</a>
+  </nav>
+  <nav class="nav-sub" aria-label="Portfolio">
+    <a href="books.html">Books</a>
+    <a href="articles.html">Articles</a>
+    <a href="substack.html">Substack</a>
+    <a href="the-archive.html">The Archive</a>
+  </nav>
+  </header>
+
+  <div class="page-heading">
+    <h1>Portfolio</h1>
+    <p>Books, articles, speeches, podcasts, and the document archive.</p>
+    <div class="divider"></div>
+  </div>
+
+  <main>
+    <p id="portfolio-md-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+    <div id="portfolio-md-root" hidden></div>
+  </main>
+
+  <footer>
+    <p>© 2026 Richard Rumelt. All rights reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/markdown-page.js"></script>
+  <script>
+    RumeltMD.load({
+      mdPath: 'content/portfolio.md',
+      root: '#portfolio-md-root',
+      status: '#portfolio-md-status',
+      heading: { title: '.page-heading h1', tagline: '.page-heading > p' }
+    });
+  </script>
+</body>
+</html>

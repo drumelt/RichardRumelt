@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Substack — Richard Rumelt</title>
+  <meta name="description" content="The Rumelt Perspectives on Substack: essays and reflections by Richard Rumelt on strategy and clear thinking." />
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="canonical" href="https://www.richardrumelt.com/substack.html" />
+  <style>
+    /* Page-specific styles */
+    main { max-width: 680px; }
+    .substack-callout {
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      background-color: var(--color-warm-white);
+      margin-bottom: 2.5rem;
+    }
+    .substack-callout a {
+      font-family: var(--font-main);
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: underline;
+    }
+    .substack-callout a:hover { color: var(--color-navy); }
+
+    .post-list { display: flex; flex-direction: column; }
+
+    .post-item {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .post-item:first-child { border-top: 1px solid var(--color-border); }
+
+    .post-date { font-family: var(--font-main); font-size: 1em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 0.3rem; }
+    .post-title { font-family: var(--font-main); font-size: 1em; font-weight: 700; color: var(--color-navy); margin-bottom: 0.4rem; line-height: 1.3; }
+    .post-desc { font-family: var(--font-main); font-size: 1em; color: var(--color-slate); line-height: 1.65; margin-bottom: 0.6rem; }
+    .post-actions { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: center; }
+    .post-link { font-family: var(--font-main); font-size: 1em; color: var(--color-accent); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .post-link:hover { text-decoration: underline; }
+
+    footer { background-color: var(--color-bg-subtle); border-top: 1px solid var(--color-border); padding: 1.5rem 2rem; }
+    footer p { font-family: var(--font-main); font-size: 1em; color: var(--color-muted); }
+
+    @media (max-width: 600px) {
+      nav { flex-wrap: wrap; gap: 0.75rem; }
+      .post-desc { line-height: 1.52; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <p class="site-banner">Richard P. Rumelt</p>
+  <nav class="nav-top" aria-label="Primary">
+    <a href="about.html">About</a>
+    <a href="index.html">Services</a>
+    <a href="books.html" class="active">Portfolio</a>
+  </nav>
+  <nav class="nav-sub" aria-label="Portfolio">
+    <a href="books.html">Books</a>
+    <a href="articles.html">Articles</a>
+    <a href="substack.html" class="active">Substack</a>
+    <a href="the-archive.html">The Archive</a>
+  </nav>
+  </header>
+
+  <div class="page-heading">
+    <h1>The Rumelt Perspectives</h1>
+    <p>Substack reflections on strategy and the practice of clear thinking</p>
+    <div class="divider"></div>
+  </div>
+
+  <main>
+    <div class="substack-callout">
+      <a href="https://rumelt.substack.com" rel="noopener noreferrer" title="Opens in this tab—use the browser’s Back control to return here.">Go to The Rumelt Perspectives Substack Page</a>
+    </div>
+    <p id="substack-csv-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+    <div class="post-list" id="substack-post-list" hidden></div>
+  </main>
+
+  <footer>
+    <p>© 2026 Richard Rumelt. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function escapeHtmlAttr(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function documentViewerUrl(filePath, returnPage) {
+      var q = new URLSearchParams();
+      q.set('src', filePath);
+      q.set('from', returnPage || 'substack.html');
+      return 'view-pdf.html#' + q.toString();
+    }
+
+    /** If an optional "order" column is "x" or "X", the row is not listed. */
+    function csvOrderSkipsItem(order) {
+      return String(order == null ? '' : order).trim().toLowerCase() === 'x';
+    }
+
+    function parseCSV(text) {
+      var lines = text.trim().split('\n');
+      var headers = lines[0].split(',');
+      return lines.slice(1).map(function (line) {
+        var cols = [];
+        var cur = '';
+        var inQ = false;
+        for (var i = 0; i < line.length; i++) {
+          var ch = line[i];
+          if (ch === '"' && !inQ) { inQ = true; }
+          else if (ch === '"' && inQ && line[i + 1] === '"') { cur += '"'; i++; }
+          else if (ch === '"' && inQ) { inQ = false; }
+          else if (ch === ',' && !inQ) { cols.push(cur); cur = ''; }
+          else { cur += ch; }
+        }
+        cols.push(cur);
+        var obj = {};
+        headers.forEach(function (h, i) {
+          obj[h.trim()] = (cols[i] || '').trim();
+        });
+        return obj;
+      });
+    }
+
+    var pdfIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+
+    fetch('substack.csv')
+      .then(function (r) { return r.text(); })
+      .then(function (text) {
+        var posts = parseCSV(text).filter(function (p) {
+          return !csvOrderSkipsItem(p.order);
+        });
+        var list = document.getElementById('substack-post-list');
+        var statusEl = document.getElementById('substack-csv-status');
+        statusEl.style.display = 'none';
+        list.hidden = false;
+
+        posts.forEach(function (p) {
+          var file = (p['file-link'] || '').trim();
+          var web = (p['web-link'] || '').trim();
+          var actions = '<div class="post-actions">';
+          if (file) {
+            actions += '<a class="post-link" href="' + escapeHtmlAttr(documentViewerUrl(file, 'substack.html')) + '">' + pdfIcon + 'View PDF</a>';
+          }
+          if (web) {
+            actions += '<a class="post-link" href="' + escapeHtmlAttr(web) + '" rel="noopener noreferrer" title="Opens in this tab—use the browser’s Back control to return to this list.">Read on Substack</a>';
+          }
+          actions += '</div>';
+
+          var item = document.createElement('div');
+          item.className = 'post-item';
+          item.innerHTML =
+            '<div class="post-date">' + p.date + '</div>'
+            + '<div class="post-title">' + p.title + '</div>'
+            + (p.description ? '<div class="post-desc">' + p.description + '</div>' : '')
+            + actions;
+          list.appendChild(item);
+        });
+      })
+      .catch(function () {
+        document.getElementById('substack-csv-status').textContent = 'Could not load posts. Serve the site over HTTP and ensure substack.csv is present.';
+      });
+  </script>
+
+</body>
+</html>

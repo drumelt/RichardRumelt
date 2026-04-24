@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>References & Citations — The Crux</title>
+  <meta name="description" content="References and citations supporting The Crux by Richard Rumelt." />
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="canonical" href="https://www.richardrumelt.com/crux-references.html" />
+  <style>
+    main { max-width: 860px; }
+    h1 { font-family: var(--font-main); font-size: 2rem; font-weight: 700; color: var(--color-navy); margin-bottom: 0.5rem; }
+    .rule { width: 40px; height: 2px; background-color: var(--color-accent); margin-bottom: 1.5rem; }
+    .intro { font-family: var(--font-main); font-size: 1em; color: var(--color-slate); line-height: 1.75; margin-bottom: 2rem; }
+    .intro p { margin-bottom: 0.75rem; }
+    .intro em { font-style: italic; font-weight: 600; }
+    .intro a { color: var(--color-accent); text-decoration: underline; }
+    @media (max-width: 600px) {
+      .intro { line-height: 1.55; margin-bottom: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <p class="site-banner">Richard P. Rumelt</p>
+  <nav class="nav-top" aria-label="Primary">
+    <a href="about.html">About</a>
+    <a href="index.html">Services</a>
+    <a href="books.html" class="active">Portfolio</a>
+  </nav>
+  <nav class="nav-sub" aria-label="Portfolio">
+    <a href="books.html" class="active">Books</a>
+    <a href="articles.html">Articles</a>
+    <a href="substack.html">Substack</a>
+    <a href="the-archive.html">The Archive</a>
+  </nav>
+  </header>
+  <main>
+    <p id="crux-refs-md-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+    <div id="crux-refs-md-root" hidden></div>
+  </main>
+  <footer><p>© 2026 Richard Rumelt. All rights reserved.</p></footer>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/markdown-page.js"></script>
+  <script>
+    RumeltMD.load({ mdPath: 'content/crux-references.md', root: '#crux-refs-md-root', status: '#crux-refs-md-status' });
+  </script>
+</body>
+</html>

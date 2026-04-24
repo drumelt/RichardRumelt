@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,follow" />
+  <title>Document — Richard Rumelt</title>
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css" />
+  <link rel="stylesheet" href="common.css" />
+  <style>
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: var(--color-cream);
+    }
+    .doc-toolbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      background: var(--color-warm-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .doc-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-main);
+      font-size: 0.95em;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: none;
+      padding: 0.35rem 0.5rem;
+      margin: -0.35rem -0.5rem;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .doc-back:hover {
+      color: var(--color-navy);
+      background: var(--color-bg-subtle);
+    }
+    .doc-back svg {
+      flex-shrink: 0;
+    }
+    .doc-frame-wrap {
+      flex: 1;
+      min-height: 0;
+      background: #525659;
+    }
+    .doc-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 70vh;
+      border: 0;
+      display: block;
+    }
+    .doc-error {
+      padding: 2rem;
+      font-family: var(--font-main);
+      color: var(--color-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <p class="site-banner">Richard P. Rumelt</p>
+    <div class="doc-toolbar" role="toolbar" aria-label="Document controls">
+    <a class="doc-back" id="doc-back" href="index.html" aria-label="Back to previous page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>Back</span>
+    </a>
+    </div>
+  </header>
+  <div class="doc-frame-wrap" id="doc-frame-wrap">
+    <iframe class="doc-frame" id="doc-frame" title="Document"></iframe>
+  </div>
+  <p class="doc-error" id="doc-error" hidden></p>
+
+  <script>
+    (function () {
+      function safeRelativePath(s) {
+        if (s == null || typeof s !== 'string') return null;
+        var t = s.trim();
+        if (!t || t.indexOf('..') !== -1) return null;
+        if (/^[a-z][a-z0-9+.-]*:/i.test(t)) return null;
+        if (t.indexOf('//') === 0) return null;
+        return t;
+      }
+
+      function iframeSrc(path) {
+        try {
+          return encodeURI(decodeURI(path));
+        } catch (e) {
+          try {
+            return encodeURI(path);
+          } catch (e2) {
+            return path;
+          }
+        }
+      }
+
+      /** PDF-only: Chromium/Edge honor these fragments (Adobe open-parameters); reduces outline/bookmarks sidebar. */
+      function viewerIframeSrc(path) {
+        var base = iframeSrc(path);
+        var clean = path.split('?')[0].split('#')[0];
+        if (!/\.pdf$/i.test(clean)) return base;
+        var ui = 'navpanes=0&pagemode=none';
+        return base.indexOf('#') === -1 ? base + '#' + ui : base + '&' + ui;
+      }
+
+      // Use the hash for src/from so parameters survive server redirects that strip ?query (common with some static servers). Query string is still supported for old links.
+      var raw = window.location.hash && window.location.hash.length > 1 && window.location.hash.indexOf('=') !== -1
+        ? window.location.hash.slice(1)
+        : window.location.search.slice(1);
+      var params = new URLSearchParams(raw);
+      var src = safeRelativePath(params.get('src'));
+      var from = safeRelativePath(params.get('from')) || 'index.html';
+
+      var backEl = document.getElementById('doc-back');
+      var frame = document.getElementById('doc-frame');
+      var frameWrap = document.getElementById('doc-frame-wrap');
+      var errEl = document.getElementById('doc-error');
+
+      backEl.setAttribute('href', from);
+
+      if (!src) {
+        frameWrap.style.display = 'none';
+        errEl.hidden = false;
+        errEl.textContent = 'This document link is invalid or missing.';
+        return;
+      }
+
+      frame.src = viewerIframeSrc(src);
+
+      var seg = src.split('/').pop() || '';
+      var base = seg.replace(/\.[^.]+$/, '').replace(/\+/g, ' ');
+      try {
+        base = decodeURIComponent(base);
+      } catch (e) { /* keep as-is */ }
+      if (base) document.title = base + ' — Richard Rumelt';
+    })();
+  </script>
+</body>
+</html>

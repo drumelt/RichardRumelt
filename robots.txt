@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /_pgbackup/
+Disallow: /was_index.html
+
+Sitemap: https://www.richardrumelt.com/sitemap.xml

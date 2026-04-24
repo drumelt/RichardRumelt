@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundamental Issues in Strategy — Richard Rumelt</title>
+  <meta name="description" content="Fundamental Issues in Strategy by Richard Rumelt, with summary and related references." />
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="canonical" href="https://www.richardrumelt.com/fundamental-issues.html" />
+  <style>
+    .book-hero { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; align-items: start; }
+    .book-cover img { width: 100%; border-radius: 2px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+    .book-year { font-family: var(--font-main); font-size: 1em; color: var(--color-muted); margin-bottom: 0.5rem; }
+    .book-title { font-family: var(--font-main); font-size: 2.25rem; font-weight: 700; color: var(--color-navy); line-height: 1.2; margin-bottom: 0.4rem; }
+    .book-subtitle { font-family: var(--font-main); font-size: 1em; font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
+    @media (max-width: 700px) { .book-hero { grid-template-columns: 1fr; } .book-cover { max-width: 200px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <p class="site-banner">Richard P. Rumelt</p>
+  <nav class="nav-top" aria-label="Primary">
+    <a href="about.html">About</a>
+    <a href="index.html">Services</a>
+    <a href="books.html" class="active">Portfolio</a>
+  </nav>
+  <nav class="nav-sub" aria-label="Portfolio">
+    <a href="books.html" class="active">Books</a>
+    <a href="articles.html">Articles</a>
+    <a href="substack.html">Substack</a>
+    <a href="the-archive.html">The Archive</a>
+  </nav>
+  </header>
+  <main>
+    <p id="fis-md-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+    <div id="fis-md-root" hidden></div>
+  </main>
+  <footer><p>© 2026 Richard Rumelt. All rights reserved.</p></footer>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/markdown-page.js"></script>
+  <script>
+    RumeltMD.load({ mdPath: 'content/fundamental-issues.md', root: '#fis-md-root', status: '#fis-md-status' });
+  </script>
+</body>
+</html>

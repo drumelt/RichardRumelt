@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Richard Rumelt</title>
+  <meta name="description" content="About Richard Rumelt: strategy scholar, author of Good Strategy Bad Strategy and The Crux, professor emeritus at UCLA Anderson, and advisor to global organizations." />
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="canonical" href="https://www.richardrumelt.com/about.html" />
+  <style>
+    /* Page-specific styles */
+    .about-body {
+      margin-bottom: 3rem;
+    }
+    .about-body::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .about-photo {
+      float: left;
+      width: 100%;
+      max-width: 420px;
+      margin-right: 2rem;
+      margin-bottom: 1rem;
+      background-color: var(--color-bg-subtle);
+      border-radius: 2px;
+    }
+    .about-photo img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      border-radius: 2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      filter: brightness(1.12) contrast(1.04) saturate(1.05);
+    }
+    .about-body .prose {
+      min-width: 0;
+    }
+    .prose p { line-height: 1.8; margin-bottom: 1.4rem; }
+    @media (max-width: 600px) {
+      .prose p { line-height: 1.55; margin-bottom: 1rem; }
+    }
+
+    .interview-card { padding: 0; background: none; border: none; box-shadow: none; }
+    .interview-title { font-family: var(--font-main); font-size: 1em; font-weight: 700; color: var(--color-navy); line-height: 1.35; margin-bottom: 0.4rem; }
+    .interview-author { font-family: var(--font-main); font-size: 1em; color: var(--color-accent); font-style: italic; margin-bottom: 0.6rem; line-height: 1.4; }
+    .interview-link {
+      font-family: var(--font-main);
+      font-size: 1em;
+      color: #111;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .interview-link:hover { color: #000; }
+
+    /* Interview + logos: text fills space; logos column hugs images (stays close to text) */
+    .interview-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      column-gap: 0.75rem;
+      row-gap: 2rem;
+      margin-top: 2.5rem;
+      clear: both;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .interview-split__text {
+      min-width: 0;
+    }
+    .interview-split__logos {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 0.65rem 0.4rem;
+      align-content: start;
+      justify-items: center;
+      justify-self: start;
+      min-width: 0;
+    }
+    .interview-split__logos img {
+      max-width: 100%;
+      max-height: 110px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    @media (max-width: 700px) {
+      .about-photo {
+        float: none;
+        width: 100%;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.5rem;
+      }
+      .interview-split {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <p class="site-banner">Richard P. Rumelt</p>
+  <nav class="nav-top" aria-label="Primary">
+    <a href="about.html" class="active">About</a>
+    <a href="index.html">Services</a>
+    <a href="books.html">Portfolio</a>
+  </nav>
+  </header>
+
+  <div class="page-heading">
+    <h1>About</h1>
+    <p>Scholar, author, and advisor on the art and science of strategy.</p>
+    <div class="divider"></div>
+  </div>
+
+  <main>
+    <p id="about-md-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+    <div id="about-md-root" hidden></div>
+  </main>
+
+  <footer>
+    <p>© 2026 Richard Rumelt. All rights reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/markdown-page.js"></script>
+  <script>
+    RumeltMD.load({
+      mdPath: 'content/about.md',
+      root: '#about-md-root',
+      status: '#about-md-status',
+      heading: { title: '.page-heading h1', tagline: '.page-heading > p' }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# GitHub rejects blobs over 100 MB; keep large local-only assets untracked.
+videos/donga.mp4

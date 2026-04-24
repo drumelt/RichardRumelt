@@ -1,0 +1,150 @@
+<!--
+================================================================================
+  CLAUDE PROJECT CONTEXT — Richard Rumelt Website
+  Last updated: 2026-04-21
+  This block is for AI assistant continuity. Safe to leave in production.
+================================================================================
+
+PROJECT
+  Personal website for Richard Rumelt (strategy scholar, author, advisor).
+  Workspace root: /data/RichardRumelt (static HTML/CSS/JS; no build step).
+
+DESIGN SYSTEM
+  Font:       Adobe Caslon Pro via Adobe Fonts/Typekit (kit: lhk6pvq.css)
+  Stylesheet: common.css — shared across all pages; CSS variables for type and palette.
+  Background: warm cream (#F2EDE3); no JS frameworks; marked@12 (CDN) for Markdown.
+
+LOCAL PREVIEW / DEPLOYMENT
+  Serve this folder over HTTP (python -m http.server, etc.). file:// breaks fetch() for
+  Markdown, CSV-driven pages (articles.html, the-archive.html), and assets.
+
+MARKDOWN BODY COPY
+  js/markdown-page.js — RumeltMD.load({ mdPath, root, status?, heading? })
+  Front matter (YAML): html_title, optional title/tagline (heading selectors vary by page).
+
+  content/*.md paired with HTML shells:
+    index.md (was_index.html), advisory.md (index.html), speaking.md, strategy-foundry.md, about.md
+    books.md, portfolio.md, substack.csv (+ substack.html)
+    fundamental-issues.md, good-strategy-bad-strategy.md, the-crux.md, strategy-structure.md
+    gsbs-references.md, crux-references.md
+
+  Not Markdown-driven (data or special UI):
+    articles.html + articles-data.csv
+    the-archive.html + library-data.csv (the-library.html redirects here)
+    view-pdf.html
+
+--------------------------------------------------------------------------------
+FILE INVENTORY (high level)
+--------------------------------------------------------------------------------
+
+MAIN SITE
+  index.html (advisory home), was_index.html (former home + index.md), speaking.html, strategy-foundry.html, about.html
+PORTFOLIO / ARCHIVE
+  books.html, portfolio.html, the-archive.html, articles.html, substack.html, the-library.html (redirect)
+BOOK / REF PAGES
+  fundamental-issues.html, good-strategy-bad-strategy.html, the-crux.html, strategy-structure.html
+  gsbs-references.html, crux-references.html
+UTILITIES
+  view-pdf.html
+
+SHARED ASSETS
+  common.css, js/markdown-page.js, images/
+
+--------------------------------------------------------------------------------
+CSV-DRIVEN PAGES — HOW THEY WORK
+--------------------------------------------------------------------------------
+
+1. ARTICLES PAGE (articles.html + articles-data.csv)
+   articles-data.csv columns: order, year, title, publication, description, file
+   - 15 entries; sorted by "order" column (numeric, 1–15). order "x" or "X" skips the row.
+   - "file" column holds relative path to PDF (e.g. articles/HBR Gnarliest Challenges.pdf).
+     Entries with no file get a "—" dash instead of a "View" link.
+   - JavaScript in articles.html fetches articles-data.csv on page load, parses it with a
+     custom CSV parser (handles quoted fields), then renders .article-row <li> elements into
+     #article-list. Shows "Loading…" until fetch resolves.
+   - Rendered row: [View/—] [year] [title in navy] [publication in italic muted] [description]
+
+2. ARCHIVE PAGE (the-archive.html + library-data.csv; the-library.html redirects)
+   library-data.csv columns: category, order, title, co_authors, year, journal, description, file
+   - Entries across 8 active categories:
+       papers            — Academic papers; year + journal as metadata
+       smr               — Special Issue SMR (Strategic Management Review); year + journal as metadata
+       cases             — Teaching cases
+       books             — Book excerpts (GSBS, Crux)
+       blogs             — StrategyLand Blog posts
+       panel_of_experts  — Panel of Experts PDFs
+       tech_notes        — Technical notes (descriptions in journal column for subtitle)
+       data              — Strategy-Structure database PDF + CSV
+   - "file" column holds relative path to PDF (or CSV for the data export).
+   - JavaScript fetches library-data.csv once on page load, stores in libraryData array.
+   - order "x" or "X" skips a row. substack.csv: add optional "order" column; x skips a row.
+     Category links stay disabled until the CSV has loaded (avoids empty lists if you click
+     too soon). Then renderList(filterName) filters by category, sorts by "order" then
+     title, and renders a simple list into #lib-list.
+   - Default state after load: "Select a category above to browse the archive."
+   - INACTIVE CATEGORIES (shown as plain text, no data yet):
+       Notes | Bibliography
+     These appear in a separate .lib-coming row below the active filters.
+
+--------------------------------------------------------------------------------
+STATUS AS OF 2026-04-21
+--------------------------------------------------------------------------------
+  Editable page bodies live under content/*.md and load at runtime via RumeltMD.load.
+  Articles and the archive remain CSV-driven; view-pdf is a thin wrapper.
+
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="robots" content="noindex,nofollow"/>
+        <title>Richard Rumelt — Strategy Scholar & Author</title>
+        <meta name="description" content="Richard Rumelt is a renowned strategy scholar, author of Good Strategy Bad Strategy and The Crux, and advisor to leading organizations worldwide."/>
+        <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+        <link rel="stylesheet" href="common.css">
+        <style>/* Page-specific: home layout (body size is global in common.css) */main { padding: 3rem 3rem 5rem; } .hero-heading { text-align: center; margin-bottom: 2.5rem; } .hero-heading h1 { font-family: var(--font-main); font-size: 3.5rem; font-weight: 700; color: var(--color-navy); line-height: 1.15; margin-bottom: 0.6rem; } .hero-heading .divider { width: 120px; height: 1px; background-color: var(--color-accent); margin: 0 auto; opacity: 0.5; } .home-body { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: 3rem; align-items: start; margin-top: 2.5rem; } .home-photo { background-color: var(--color-bg-subtle); border-radius: 2px; min-height: 420px; } .home-photo img { width: 100%; height: 420px; object-fit: cover; object-position: center top; display: block; border-radius: 2px; } .prose p { line-height: 1.7; margin-bottom: 2rem; } .prose p:last-child { margin-bottom: 0; } .prose em { font-style: italic; font-size: 1.04em; letter-spacing: 0.02em; } footer { text-align: left; } @media (max-width: 680px) { .home-body { grid-template-columns: 1fr; gap: 2rem; } .home-photo { max-width: min(100%, 420px); } .hero-heading h1 { font-size: 2.5rem; } main { padding: 1.5rem 1rem 3rem; } .prose p { line-height: 1.55; margin-bottom: 1.1rem; } }</style>
+    </head>
+    <body>
+        <header class="site-header">
+            <p class="site-banner">Richard P. Rumelt</p>
+        <nav>
+            <a href="index.html">Advisory</a>
+            <a href="strategy-foundry.html" class="nav-strategy-foundry">Strategy Foundry</a>
+            <a href="speaking.html">Speaking</a>
+            <a href="about.html">About</a>
+            <a href="books.html" class="nav-bridge">Portfolio →</a>
+        </nav>
+        </header>
+        <main>
+            <div class="hero-heading">
+                <h1>Richard Rumelt</h1>
+                <p class="tagline">Strategy Advisor, Speaker, Writer, Scholar, Spacecraft Designer</p>
+                <div class="divider"></div>
+            </div>
+            <div class="home-body">
+                <div class="home-photo">
+                    <img src="images/headshot.jpg" alt="Richard Rumelt"/>
+                </div>
+                <div>
+                    <p id="index-md-status" style="color: var(--color-muted); font-style: italic;">Loading…</p>
+                    <div class="prose" id="index-md-root" hidden></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>© 2026 Richard Rumelt. All rights reserved.</p>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+        <script src="js/markdown-page.js"></script>
+        <script>
+            RumeltMD.load({
+                mdPath: 'content/index.md',
+                root: '#index-md-root',
+                status: '#index-md-status',
+                heading: { title: '.hero-heading h1', tagline: '.hero-heading .tagline' }
+            });
+        </script>
+    </body>
+</html>

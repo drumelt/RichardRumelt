@@ -1,0 +1,475 @@
+/* ============================================================
+   common.css — Richard Rumelt website shared styles
+   Edit this file to change colors, fonts, or layout globally.
+   ============================================================ */
+/* ── Design tokens ── */
+/* Adobe Caslon Pro is loaded via Adobe Fonts (Typekit) on each page — link must appear
+   before this stylesheet. Kit should include regular, italic, semibold, and bold (600/700);
+   configure weights at https://fonts.adobe.com → Web Projects → your kit. */
+:root {
+    --font-main: "adobe-caslon-pro", "Adobe Caslon Pro", Georgia, serif;
+    /* Body copy: CSS 16pt (~21px at 96dpi). Narrow screens override in @media below. */
+    --body-font-size: 16pt;
+    --body-line-height: 1.7;
+    --prose-line-height: 1.75;
+    --prose-p-gap: 1.25rem;
+    --color-cream: #F2EDE3;
+    --color-warm-white: #f5f1ea;
+    --color-bg-subtle: #ebe6dd;
+    --color-navy: #1a2332;
+    --color-navy-light: #2d3748;
+    --color-slate: #475569;
+    --color-muted: #64748b;
+    --color-accent: #8b6f47;
+    --color-accent-light: #a68a5e;
+    --color-border: #d4cfc5;
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+/* ── Base ── */
+html {
+    font-size: 16px;
+    font-family: var(--font-main);
+}
+
+body {
+    font-family: var(--font-main);
+    /* Use real @font-face cuts from Typekit only; no browser-faked bold/italic */
+    font-synthesis: none;
+    font-size: var(--body-font-size);
+    line-height: var(--body-line-height, 1.7);
+    background-color: var(--color-cream);
+    color: var(--color-slate);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Site name (above nav on every page) ── */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-cream);
+}
+
+.site-banner {
+    font-family: var(--font-main);
+    font-size: 1.08rem;
+    font-weight: 600;
+    font-variant: all-small-caps;
+    font-synthesis: none;
+    letter-spacing: 0.2em;
+    text-align: center;
+    color: var(--color-navy);
+    padding: 0.45rem 1.5rem 0.35rem;
+    margin: 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Navigation ── */
+.site-header nav {
+    background-color: var(--color-cream);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.85rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: nowrap;
+    position: static;
+}
+
+.site-header .nav-top {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+
+.site-header .nav-sub {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.site-header nav a {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-muted);
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.site-header nav a:hover {
+    color: var(--color-navy);
+}
+
+/* Sits directly after Advisory; slightly tighter space between the two words */
+.site-header nav a.nav-strategy-foundry {
+    word-spacing: -0.14em;
+}
+
+.site-header nav a.active {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+/* ── Page heading (used on most interior pages) ── */
+.page-heading {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+}
+
+.page-heading h1 {
+    font-family: var(--font-main);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 0.6rem;
+}
+
+.page-heading p:not(.tagline) {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+}
+
+.tagline {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.divider {
+    width: 120px;
+    height: 1px;
+    background-color: var(--color-accent);
+    margin: 0 auto;
+    opacity: 0.5;
+}
+
+/* ── Main content wrapper ── */
+main {
+    flex: 1;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem 5rem;
+}
+
+/* ── Prose (body text blocks) ── */
+.prose p {
+    font-family: var(--font-main);
+    font-size: 1em;
+    line-height: var(--prose-line-height);
+    color: var(--color-slate);
+    margin-bottom: var(--prose-p-gap);
+}
+
+.prose p:last-child {
+    margin-bottom: 0;
+}
+
+.prose strong {
+    font-weight: 700;
+    color: var(--color-navy);
+}
+
+.prose em {
+    font-style: italic;
+    font-weight: 600;
+}
+
+.prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.prose ul {
+    margin-left: 1.5rem;
+    margin-bottom: var(--prose-p-gap);
+}
+
+.prose ul li {
+    font-family: var(--font-main);
+    font-size: 1em;
+    line-height: var(--body-line-height, 1.7);
+    margin-bottom: 0.5rem;
+}
+
+/* ── Back link ── */
+.back-link {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Section heading (uppercase label) ── */
+.section-heading {
+    font-family: var(--font-main);
+    font-size: 1em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-navy);
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Accent rule (short underline beneath headings) ── */
+.accent-rule {
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
+    margin-bottom: 1.5rem;
+}
+
+/* ── Card (generic white panel) ── */
+.card {
+    background-color: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ── PDF / page link ── */
+.view-link {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    transition: color 0.2s;
+}
+
+.view-link:hover {
+    color: var(--color-navy);
+    text-decoration: underline;
+}
+
+/* ── Supplemental row (book pages) ── */
+.supp-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+}
+
+.supp-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.supp-tag {
+    font-family: var(--font-main);
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--color-muted);
+    background: var(--color-bg-subtle);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+}
+
+.supp-label {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-navy);
+}
+
+.supp-link {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+}
+
+.supp-link:hover {
+    text-decoration: underline;
+}
+
+.supp-soon {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+/* ── Reference row (gsbs-references, crux-references) ── */
+.ref-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+    gap: 1rem;
+}
+
+.ref-label {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-slate);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.ref-link {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ref-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Footer ── */
+footer {
+    background-color: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border);
+    padding: 1.5rem 2rem;
+}
+
+footer p {
+    font-family: var(--font-main);
+    font-size: 1em;
+    color: var(--color-muted);
+}
+
+/* ── Narrow screens (phones): tighter line spacing & padding, smaller type than 16pt body ── */
+@media (max-width: 600px) {
+    :root {
+        --body-font-size: 1rem;
+        --body-line-height: 1.52;
+        --prose-line-height: 1.55;
+        --prose-p-gap: 1rem;
+    }
+
+    body {
+        line-height: var(--body-line-height);
+    }
+
+    .site-header nav {
+        flex-wrap: wrap;
+        /* Tighter between wrapped rows of links; slightly wider between items on one row */
+        row-gap: 0.35rem;
+        column-gap: 0.65rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Shorter line boxes than body text (inherits ~1.52) so wrapped nav rows stack tighter */
+    .site-header nav a {
+        line-height: 1.25;
+    }
+
+    .site-banner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    main {
+        padding: 1.25rem 1rem 3rem;
+    }
+
+    .page-heading {
+        padding: 2rem 1rem 1.5rem;
+    }
+
+    .page-heading h1 {
+        font-size: 2rem;
+        line-height: 1.12;
+    }
+
+    .page-heading p:not(.tagline) {
+        margin-bottom: 0.75rem;
+    }
+
+    .tagline {
+        margin-bottom: 0.75rem;
+    }
+
+    .prose ul li {
+        margin-bottom: 0.35rem;
+    }
+
+    .ref-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ref-link {
+        align-self: flex-end;
+    }
+
+    footer {
+        padding: 1.25rem 1rem;
+    }
+}
+
+
+/* Supplemental materials plain list (replaces supp-row cards) */
+.supp-list { list-style: none; padding: 0; margin: 0; }
+.supp-item-row { display: flex; align-items: baseline; gap: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid var(--color-border); }
+.supp-item-row:last-child { border-bottom: none; }
+.supp-view { font-family: var(--font-main); font-size: 0.88em; color: var(--color-accent); white-space: nowrap; flex-shrink: 0; text-decoration: none; }
+.supp-view:hover { text-decoration: underline; }
+.supp-no-link { font-family: var(--font-main); font-size: 0.88em; color: var(--color-border); white-space: nowrap; flex-shrink: 0; }
+.supp-item-label { font-family: var(--font-main); font-size: 1em; color: var(--color-navy); }

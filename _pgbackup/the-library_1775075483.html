@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Library — Richard Rumelt</title>
+  <link rel="stylesheet" href="https://use.typekit.net/lhk6pvq.css">
+  <link rel="stylesheet" href="common.css">
+  <style>
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-navy);
+    }
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.55);
+    }
+    .hero-text {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      padding: 0 2rem;
+    }
+    .hero-text h1 {
+      font-family: var(--font-main);
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .hero-text p {
+      font-family: var(--font-main);
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* ── Filter tabs ── */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .filter-btn {
+      font-family: var(--font-main);
+      font-size: 0.875rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: var(--color-slate);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover {
+      border-color: var(--color-navy);
+      color: var(--color-navy);
+    }
+    .filter-btn.active {
+      background-color: var(--color-navy);
+      color: #fff;
+      border-color: var(--color-navy);
+    }
+
+    /* ── Card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background-color: var(--color-warm-white);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-category {
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+    .card-year {
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      color: var(--color-muted);
+    }
+    .card-title {
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      line-height: 1.35;
+    }
+    .card-desc {
+      font-family: var(--font-main);
+      font-size: 0.875rem;
+      color: var(--color-slate);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .card-desc em {
+      font-style: italic;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      color: var(--color-accent);
+      margin-top: 0.5rem;
+      transition: color 0.2s;
+    }
+    .card-link:hover { color: var(--color-navy); text-decoration: underline; }
+    .card-link svg { flex-shrink: 0; }
+    .card-soon {
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background-color: var(--color-bg-subtle);
+      border-top: 1px solid var(--color-border);
+      padding: 1.5rem 2rem;
+    }
+    footer p {
+      font-family: var(--font-main);
+      font-size: 0.875rem;
+      color: var(--color-muted);
+    }
+
+    @media (max-width: 800px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .card-grid { grid-template-columns: 1fr; }
+      nav { flex-wrap: wrap; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <span class="nav-brand">Richard Rumelt</span>
+    <a href="index.html">Home</a>
+    <a href="books.html">Books</a>
+    <a href="advisory.html">Advisory</a>
+    <a href="strategy-foundry.html">Strategy Foundry</a>
+    <a href="speaking.html">Speaking</a>
+    <a href="about.html">About</a>
+    <a href="articles.html">Articles</a>
+    <a href="substack.html">Substack</a>
+    <a href="the-library.html" class="active">The Library</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <img src="card_catalog.png" alt="Card catalog drawers" />
+    <div class="hero-text">
+      <h1>The Library</h1>
+      <p>A curated collection of Richard Rumelt's writings: academic papers, cases, panel of experts, technical notes, and other materials.</p>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Filter tabs -->
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="articles">Articles</button>
+      <button class="filter-btn" data-filter="papers">Academic Papers</button>
+      <button class="filter-btn" data-filter="cases">Cases</button>
+      <button class="filter-btn" data-filter="books">Books</button>
+      <button class="filter-btn" data-filter="blogs">StrategyLand Blog</button>
+      <button class="filter-btn" data-filter="substack">Substack</button>
+      <button class="filter-btn" data-filter="precis">Précis</button>
+      <button class="filter-btn" data-filter="data">Data</button>
+    </div>
+
+    <!-- Card grid -->
+    <div class="card-grid" id="cardGrid">
+
+      <!-- PDF icon snippet used inline -->
+
+      <!-- ── ARTICLES ── -->
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">HBR: The Gnarliest Challenges</div>
+        <a class="card-link" href="articles/HBR Gnarliest Challenges.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span><span class="card-year">1996</span></div>
+        <div class="card-title">CMR Forum: The "Honda Effect" Revisited</div>
+        <div class="card-desc">Mintzberg et al.</div>
+        <a class="card-link" href="articles/Mintzberg et al. - 1996 - CMR Forum The &quot;Honda Effect&quot; Revisited.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span><span class="card-year">2009</span></div>
+        <div class="card-title">Strategy in a Structural Break</div>
+        <a class="card-link" href="articles/Rumelt - 2009 - Strategy in a 'structural break'.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Strategic Challenges & Coherence for Tumultuous Times</div>
+        <a class="card-link" href="articles/Strategic challenges %26 coherence for tumultuous times.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Getting Strategy Wrong — and How to Do It Right Instead</div>
+        <a class="card-link" href="articles/getting-strategy-wrong-and-how-to-do-it-right-instead.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Management Lessons from the Financial Crisis</div>
+        <div class="card-desc">A conversation with Lowell Bryan and Richard Rumelt</div>
+        <a class="card-link" href="articles/management lessons from the financial crisis a conversation with lowell bryan and richard rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Setting Strategy in the New Era</div>
+        <div class="card-desc">A conversation with Lowell Bryan and Richard Rumelt</div>
+        <a class="card-link" href="articles/setting strategy in the new era a conversation with lowell bryan and richard rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Strategy's Strategist: An Interview with Richard Rumelt</div>
+        <a class="card-link" href="articles/strategys strategist an interview with richard rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">The Perils of Bad Strategy</div>
+        <a class="card-link" href="articles/the perils of bad strategy.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Weighing the US Government's Response to the Crisis</div>
+        <div class="card-desc">A dialogue</div>
+        <a class="card-link" href="articles/weighing the us governments response to the crisis a dialogue.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="articles">
+        <div class="card-meta"><span class="card-category">Articles</span></div>
+        <div class="card-title">Why Bad Strategy Is a Social Contagion</div>
+        <a class="card-link" href="articles/why-bad-strategy-is-a-social-contagion_final.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── BOOKS ── -->
+      <div class="card" data-category="books">
+        <div class="card-meta"><span class="card-category">Books</span></div>
+        <div class="card-title">Strategy, Structure & Economic Performance</div>
+        <a class="card-link" href="books_excertps/Strategy_Structure_Economic_Performance.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="books">
+        <div class="card-meta"><span class="card-category">Books</span></div>
+        <div class="card-title">The Crux — Excerpt</div>
+        <a class="card-link" href="books_excertps/The Crux Excerpt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── CASES ── -->
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">3D Graphics Technology</div>
+        <a class="card-link" href="cases/3D Graphics Technology.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Baroumand Designs (A&amp;B)</div>
+        <a class="card-link" href="cases/Baroumand Designs (A%26B).pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Eagle Flask Company</div>
+        <a class="card-link" href="cases/Eagle Flask Company.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Fansteel</div>
+        <a class="card-link" href="cases/Fansteel.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Fansteel Teaching Notes</div>
+        <a class="card-link" href="cases/Fansteel Teaching Notes.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Global Crossing (A)</div>
+        <a class="card-link" href="cases/GlobalCrossing_A.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Global Crossing (B)</div>
+        <a class="card-link" href="cases/Global Crossing-B.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Gordon Moore's Law</div>
+        <a class="card-link" href="cases/Gordon Moore's Law.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">MicroChipper</div>
+        <a class="card-link" href="cases/MicroChipper.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Note on 3D Graphics Technology</div>
+        <a class="card-link" href="cases/Note on 3D Graphics Technology.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">NVIDIA Corporation in 2001</div>
+        <a class="card-link" href="cases/NVIDIA Corporation In 2001.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Rank Xerox Iran</div>
+        <a class="card-link" href="cases/Rank Xerox Iran.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Semiconductor Technology and Moore's Law</div>
+        <a class="card-link" href="cases/SemiConductorTechandMooresLaw.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Starbucks 2000</div>
+        <a class="card-link" href="cases/Starbucks 2000.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Teaching Note: Music Industry in the Digital Age</div>
+        <a class="card-link" href="cases/Teaching Note for Music Industry in Digital Age.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">The Industrial and Mining Development Bank of Iran (A)</div>
+        <a class="card-link" href="cases/The Industrial and Mining Development Bank of Iran (A).pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">The Integrated Circuit Industry in 2003</div>
+        <a class="card-link" href="cases/The Integrated Circuit Industry in 2003.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">The Last Mile 2002</div>
+        <a class="card-link" href="cases/The Last Mile_2002.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">The Microsoftware Industry 1984</div>
+        <a class="card-link" href="cases/TheMicrosoftwareIndustry1984.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">The Music Industry in the Digital Age</div>
+        <a class="card-link" href="cases/The Music Industry in the Digital Age.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="cases">
+        <div class="card-meta"><span class="card-category">Cases</span></div>
+        <div class="card-title">Visicorp 1978–1984</div>
+        <a class="card-link" href="cases/Visicorp 1978-1984.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── ACADEMIC PAPERS ── -->
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Asymptotic Shapley Value</div>
+        <a class="card-link" href="papers/AsymptoticShapleyValue.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">A Bargaining Perspective on Resource Advantage</div>
+        <a class="card-link" href="papers/Bargaining_Perspective.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1982</span></div>
+        <div class="card-title">Diversification and Profitability</div>
+        <div class="card-desc">Published in <em>Strategic Management Journal</em></div>
+        <a class="card-link" href="papers/Diversification%26Profitability_SMJ82.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1992</span></div>
+        <div class="card-title">Demand Uncertainty, Capital Specificity, and Industrial Evolution</div>
+        <a class="card-link" href="papers/DmdUncCapSpecIndEvol_92.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1994</span></div>
+        <div class="card-title">Forward: Competing on Competencies</div>
+        <a class="card-link" href="papers/FwdComBasedCompet_94.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">2010</span></div>
+        <div class="card-title">The Hand of Corporate Management in Capital Allocations</div>
+        <a class="card-link" href="papers/HandofCorporateManagement2010.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1992</span></div>
+        <div class="card-title">Heterogeneity Under Competition</div>
+        <a class="card-link" href="papers/HeteroUnderCompet_92.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1991</span></div>
+        <div class="card-title">How Much Does Industry Matter?</div>
+        <div class="card-desc">Published in <em>Strategic Management Journal</em></div>
+        <a class="card-link" href="papers/HowMuchDoesIndustryMatter_SMJ91.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1992</span></div>
+        <div class="card-title">Incentives, Routines & Self-Command</div>
+        <a class="card-link" href="papers/IncentivesRoutines%26SelfCommand1992.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1995</span></div>
+        <div class="card-title">Inertia and Transformation</div>
+        <a class="card-link" href="papers/Inertia%26Transformation1995.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Management Lessons from the Financial Crisis (1)</div>
+        <a class="card-link" href="papers/ManagementLesssonsFinCrisis1.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Management Lessons from the Financial Crisis (2)</div>
+        <a class="card-link" href="papers/ManagementLesssonsFinCrisis2.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1989</span></div>
+        <div class="card-title">Markets for Experience Goods with Performance Uncertainty</div>
+        <div class="card-desc">Published in <em>RAND Journal of Economics</em></div>
+        <a class="card-link" href="papers/MarketsforExperienceGoodsWithPerfiormanceUncertainty_Rand89.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1981</span></div>
+        <div class="card-title">Market Share and Profitability (Stochastic)</div>
+        <a class="card-link" href="papers/ms_profit_stochastic_81.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">A Payments Perspective</div>
+        <a class="card-link" href="papers/Payments_perspective.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Strategy Evaluation — Hofer &amp; Schendel</div>
+        <a class="card-link" href="papers/Rumelt Strategy Evaluation Hofer %26 Schendel.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span><span class="card-year">1991</span></div>
+        <div class="card-title">Software Piracy</div>
+        <div class="card-desc">Published in <em>Management Science</em></div>
+        <a class="card-link" href="papers/SoftwarePiracy_MS91.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Strategic Management and Economics</div>
+        <a class="card-link" href="papers/StrategicManagement%26Economics.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Theory, Strategy and Entrepreneurship</div>
+        <a class="card-link" href="papers/TheoryStrategy%26Entrepreneurship.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Uncertain Imitability</div>
+        <a class="card-link" href="papers/Uncertain_Imitability.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="papers">
+        <div class="card-meta"><span class="card-category">Academic Papers</span></div>
+        <div class="card-title">Understanding Corporate Coherence</div>
+        <a class="card-link" href="papers/UnderstandingCorporateCoherence.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── STRATEGYLAND BLOG ── -->
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Anonymity is a Design Flaw in the Internet</div>
+        <a class="card-link" href="blogs/Strategy_Land/Anonymity is a design flaw in the Internet.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Arbitrary Goals Don't Help Generate Good Strategies</div>
+        <a class="card-link" href="blogs/Strategy_Land/Aribitrary goals don't help generate good strategies.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Boulder Climbers Trigger an Insight About the Gains to Focus</div>
+        <a class="card-link" href="blogs/Strategy_Land/Boulder climbers trigger an insight about the gains to focus.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Coercion in the USSR and in the US Legal System</div>
+        <a class="card-link" href="blogs/Strategy_Land/Coercion in the USSR and in the US legal system.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Competitors Who Exploit Human Frailties Do Not Contribute to Society</div>
+        <a class="card-link" href="blogs/Strategy_Land/Competitors who exploit human frailties do not contribute to society.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Dark-Side Strategies Extract Payments Without Creating Value</div>
+        <a class="card-link" href="blogs/Strategy_Land/Dark-side strategies extract payments without creating value in return.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Distributed Knowledge Resists Imitation</div>
+        <a class="card-link" href="blogs/Strategy_Land/Distributed knowledge resists imitation.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Do's and Don'ts on Being Steve Jobs</div>
+        <a class="card-link" href="blogs/Strategy_Land/Do's and Don'ts on being Steve Jobs.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Egypt's Uprising is Triggered by Huge Cadre of Unemployed Urban Youth</div>
+        <a class="card-link" href="blogs/Strategy_Land/Egypt's uprising is triggered by huge cadre of unemployed urban youth.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Good Management is More Than Motivation</div>
+        <a class="card-link" href="blogs/Strategy_Land/Good management is more than motivation.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Good Strategy Work is Based on Insight</div>
+        <a class="card-link" href="blogs/Strategy_Land/Good strategy work is based on insight.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Head I Win, Tails You Lose: Compensation Boosts Risk-Taking</div>
+        <a class="card-link" href="blogs/Strategy_Land/Head I win tails you lose compensation boosts risk-taking.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Incremental Improvements in a Chain-Linked System Reduces Overall Performance</div>
+        <a class="card-link" href="blogs/Strategy_Land/Incremental improvements in a chain-linked system reduces overall performance.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Industry Matters but Strategy Matters More</div>
+        <a class="card-link" href="blogs/Strategy_Land/Industry matters but strategy matters more.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Introducing a Series on Fundamental Research in Business Strategy</div>
+        <a class="card-link" href="blogs/Strategy_Land/Introducing a series on fundamental research in business strategy.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Iranian Students Could Not Understand the US Loss in Vietnam</div>
+        <a class="card-link" href="blogs/Strategy_Land/Iranian students could not understand the US loss in Vietnam.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Learning the Right Lessons from the WWII Economy</div>
+        <a class="card-link" href="blogs/Strategy_Land/Learning the right lessons from the WWII economy.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Model-Risk Estimates Embody a False Belief That Models Can Map Reality</div>
+        <a class="card-link" href="blogs/Strategy_Land/Model-risk estimates embody a false belief that models can map reality.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Public Employee Pension Funds Take Too Much Risk</div>
+        <a class="card-link" href="blogs/Strategy_Land/Public employee pension funds take too much risk.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Risk is Not Always Evident in Bumps and Fluctuations</div>
+        <a class="card-link" href="blogs/Strategy_Land/Risk is not always evident in bumps and fluctuations.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">The Big Risk in Capital Budgeting is Lying, Not Uncertain Cash Flows</div>
+        <a class="card-link" href="blogs/Strategy_Land/The big risk in capital budgeting is lying, not uncertain cash flows.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">The Forces at Work Deconstructing Physical Book Retailing</div>
+        <a class="card-link" href="blogs/Strategy_Land/The forces at work deconstructing physical book retailing.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">The Puzzle of Inertia at GM Kicks Off a Series on Chain-Link Systems</div>
+        <a class="card-link" href="blogs/Strategy_Land/The puzzle of inertia at GM kicks off a series on chain-link systems.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">The Spurious Relationship Between Market Share and Profitability</div>
+        <a class="card-link" href="blogs/Strategy_Land/The spurious relationship between market share and profitability.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">The U.S. Economy Needs to Break Its Stimulus Habit</div>
+        <a class="card-link" href="blogs/Strategy_Land/The U.S. economy needs to break its stimulus habit.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">To See the World Anew, an Older Way of Seeing Must Be Cast Aside</div>
+        <a class="card-link" href="blogs/Strategy_Land/To see the world anew, an older way of seeing must be cast aside_.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Uncertain Imitability Explains Most Stylized Facts About Industry</div>
+        <a class="card-link" href="blogs/Strategy_Land/Uncertain imitability explains most stylized facts about industry.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Verizon Should Separate Out Its Wireline Business</div>
+        <a class="card-link" href="blogs/Strategy_Land/Verizon should separate out its wireline business.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">What Were They Thinking? Hindenburg</div>
+        <a class="card-link" href="blogs/Strategy_Land/What were they thinking Hindenberg.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="blogs">
+        <div class="card-meta"><span class="card-category">StrategyLand Blog</span></div>
+        <div class="card-title">Where There Are Large Flows of Money, You Will Find Skimmers</div>
+        <a class="card-link" href="blogs/Strategy_Land/Where there are large flows of money, you will find skimmers.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── SUBSTACK ── -->
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">A Strategist's Basic Bookshelf</div>
+        <a class="card-link" href="blogs/Substack/A Strategist's Basic Bookshelf - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Becoming a Strategist (Part 1)</div>
+        <a class="card-link" href="blogs/Substack/Becoming a Strategist (Part 1) - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Becoming a Strategist (Part 2)</div>
+        <a class="card-link" href="blogs/Substack/Becoming a Strategist (Part 2 corrected).pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Becoming a Strategist (Part 3)</div>
+        <a class="card-link" href="blogs/Substack/Becoming a Strategist (Part 3) - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Blockbuster</div>
+        <a class="card-link" href="blogs/Substack/Blockbuster - by Richard Rumelt - The Rumelt Perspectives.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Can California Build High-Speed Rail?</div>
+        <a class="card-link" href="blogs/Substack/Can California Build High-Speed Rail_ - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Distributed Knowledge</div>
+        <a class="card-link" href="blogs/Substack/Distributed Knowledge - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Intel's Fall From Grace</div>
+        <a class="card-link" href="blogs/Substack/Intel's Fall From Grace - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Is Management About People?</div>
+        <a class="card-link" href="blogs/Substack/Is Management About People_ - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Richard Helms Explains Skimming</div>
+        <a class="card-link" href="blogs/Substack/Richard Helms Explains Skimming - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Stolen Credibility</div>
+        <a class="card-link" href="blogs/Substack/Stolen Credibility - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Strategy at an Inflection Point</div>
+        <a class="card-link" href="blogs/Substack/Strategy at an Inflection Point - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">Tesla's Honorable Discharge</div>
+        <a class="card-link" href="blogs/Substack/Tesla's Honorable Discharge - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Amelia Paradox</div>
+        <a class="card-link" href="blogs/Substack/The Amelia Paradox - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Dark Side of Business</div>
+        <a class="card-link" href="blogs/Substack/The Dark Side of Business - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Logic of the Chain</div>
+        <a class="card-link" href="blogs/Substack/The Logic of The Chain - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Problem of Development</div>
+        <a class="card-link" href="blogs/Substack/The Problem of Development - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Shade of Strategy</div>
+        <a class="card-link" href="blogs/Substack/The Shade of Strategy - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Sound of a Domino Falling</div>
+        <a class="card-link" href="blogs/Substack/The Sound of a Domino Falling - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The Standard Narrative</div>
+        <a class="card-link" href="blogs/Substack/The Standard Narrative - by Richard Rumelt.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="substack">
+        <div class="card-meta"><span class="card-category">Substack</span></div>
+        <div class="card-title">The U.S. Needs an Office of Competitive Assessment</div>
+        <a class="card-link" href="blogs/Substack/The U.S. Needs an Office of Competitive Assessment.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── PRÉCIS ── -->
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">How Much Does Industry Matter? — Précis</div>
+        <a class="card-link" href="precis/How_Much_Does_Industry_Precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">Bargaining — Précis</div>
+        <a class="card-link" href="precis/bargaining_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">Berkeley — Précis</div>
+        <a class="card-link" href="precis/berkeley_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">Payment — Précis</div>
+        <a class="card-link" href="precis/payment_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">PIR — Précis</div>
+        <a class="card-link" href="precis/pir_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">Post-Rumelt — Précis</div>
+        <a class="card-link" href="precis/postrum_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">RST — Précis</div>
+        <a class="card-link" href="precis/rst_precis.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="precis">
+        <div class="card-meta"><span class="card-category">Précis</span></div>
+        <div class="card-title">SIND — Précis</div>
+        <a class="card-link" href="precis/sind_precis.PDF" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <!-- ── DATA ── -->
+      <div class="card" data-category="data">
+        <div class="card-meta"><span class="card-category">Data</span></div>
+        <div class="card-title">Rumelt Strategy-Structure Database (PDF)</div>
+        <a class="card-link" href="Data/Rumelt_Strategy_Structure database.pdf" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View PDF
+        </a>
+      </div>
+
+      <div class="card" data-category="data">
+        <div class="card-meta"><span class="card-category">Data</span></div>
+        <div class="card-title">Rumelt Strategy-Structure Database (CSV)</div>
+        <a class="card-link" href="Data/Rumelt_Strategy_Structure database.csv" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download CSV
+        </a>
+      </div>
+
+    </div><!-- end card-grid -->
+  </main>
+
+  <footer>
+    <p>© 2026 Richard Rumelt. All rights reserved.</p>
+  </footer>
+
+  <!-- Filter logic -->
+  <script>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
