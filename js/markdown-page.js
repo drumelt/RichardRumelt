@@ -6,11 +6,27 @@
   'use strict';
 
   /**
-   * Trailing slash path of the current page’s directory (for GitHub Pages
-   * project URLs like https://user.github.io/Repo/ when the path has no
-   * trailing slash in the address bar).
+   * Site root path (trailing slash), from this script’s URL. Captured as soon
+   * as markdown-page.js runs (only then is `document.currentScript` reliable).
+   * e.g. …/RichardRumelt/js/… → /RichardRumelt/ — correct even if the current
+   * page URL is missing a trailing slash. Falls back to location.pathname
+   * logic for edge cases.
    */
+  var SITE_BASE_FROM_SCRIPT = (function () {
+    var cs = document.currentScript;
+    if (!cs || !cs.src) return null;
+    try {
+      var u = new URL('..', cs.src);
+      if (u.origin !== window.location.origin) return null;
+      var d = u.pathname;
+      return d.charAt(d.length - 1) === '/' ? d : d + '/';
+    } catch (e) {
+      return null;
+    }
+  })();
+
   function siteBasePath() {
+    if (SITE_BASE_FROM_SCRIPT) return SITE_BASE_FROM_SCRIPT;
     var p = window.location.pathname;
     if (p.endsWith('/')) return p;
     var segs = p.split('/');
