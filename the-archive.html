@@ -618,7 +618,7 @@
 
     RumeltArchiveHub.load({ mdPath: 'content/archive-hub.md' }).catch(function () {});
 
-    fetch('library-data.csv')
+    fetch(RumeltMD.assetUrl('library-data.csv'))
       .then(r => {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();

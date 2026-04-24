@@ -91,7 +91,11 @@
     var root = document.querySelector(rootSel);
     var errEl = document.querySelector(errSel);
 
-    return fetch(mdPath)
+    var url =
+      window.RumeltMD && typeof window.RumeltMD.assetUrl === 'function'
+        ? window.RumeltMD.assetUrl(mdPath)
+        : mdPath;
+    return fetch(url)
       .then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();
@@ -123,7 +127,10 @@
         if (errEl) {
           errEl.hidden = false;
           errEl.textContent =
-            'Could not load ' + mdPath + '. Use a local web server so content files can be fetched. You can still edit the Markdown file locally and reload after fixing the server.';
+            'Could not load ' + mdPath + '. ' +
+            (window.location && window.location.protocol === 'file:'
+              ? 'Open this site via a local web server, not as a file:// page.'
+              : 'Check the page URL, your connection, or the live deployment.');
         }
         if (ledeEl && !ledeEl.innerHTML.trim()) {
           ledeEl.textContent =

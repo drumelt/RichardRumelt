@@ -55,6 +55,7 @@
 
   <footer><p>© 2026 Richard Rumelt. All rights reserved.</p></footer>
 
+  <script src="js/markdown-page.js"></script>
   <script>
     function escapeHtmlAttr(s) {
       return String(s)
@@ -97,7 +98,7 @@
       });
     }
 
-    fetch('articles-data.csv')
+    fetch(RumeltMD.assetUrl('articles-data.csv'))
       .then(r => r.text())
       .then(text => {
         const articles = parseCSV(text).filter(function (a) {

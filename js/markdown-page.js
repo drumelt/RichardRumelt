@@ -5,6 +5,31 @@
 (function (window) {
   'use strict';
 
+  /**
+   * Trailing slash path of the current page’s directory (for GitHub Pages
+   * project URLs like https://user.github.io/Repo/ when the path has no
+   * trailing slash in the address bar).
+   */
+  function siteBasePath() {
+    var p = window.location.pathname;
+    if (p.endsWith('/')) return p;
+    var segs = p.split('/');
+    var last = segs[segs.length - 1] || '';
+    if (last && last.indexOf('.') !== -1) {
+      return p.slice(0, p.lastIndexOf('/') + 1) || '/';
+    }
+    return p + '/';
+  }
+
+  /** Resolves a site-relative path to an absolute URL for fetch(). */
+  function assetUrl(relative) {
+    var r = String(relative || '');
+    if (/^https?:\/\//i.test(r) || r.indexOf('//') === 0) return r;
+    r = r.replace(/^\//, '');
+    if (!r) return window.location.origin + siteBasePath();
+    return new URL(r, window.location.origin + siteBasePath()).href;
+  }
+
   function stripBOM(t) {
     return String(t).replace(/^\uFEFF/, '');
   }
@@ -51,7 +76,7 @@
     if (!root) return Promise.reject(new Error('root not found: ' + opts.root));
     var status = opts.status ? document.querySelector(opts.status) : null;
 
-    return fetch(opts.mdPath)
+    return fetch(assetUrl(opts.mdPath))
       .then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();
@@ -67,7 +92,10 @@
       .catch(function (err) {
         console.warn(err);
         if (status) {
-          status.textContent = 'Could not load ' + opts.mdPath + '. Use a local web server so content files can be fetched.';
+          var hint = window.location && window.location.protocol === 'file:'
+            ? 'Open this site via a local web server (e.g. python -m http.server), not as a file:// page.'
+            : 'Check the page URL, your connection, or the live deployment.';
+          status.textContent = 'Could not load ' + opts.mdPath + '. ' + hint;
         }
       });
   }
@@ -75,6 +103,8 @@
   window.RumeltMD = {
     parseFrontMatter: parseFrontMatter,
     applyHeadings: applyHeadings,
+    siteBasePath: siteBasePath,
+    assetUrl: assetUrl,
     load: load
   };
 })(window);
