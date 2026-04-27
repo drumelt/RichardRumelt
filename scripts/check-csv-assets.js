@@ -71,9 +71,7 @@ function check(csvName, fileKeys) {
 
 let exit = 0;
 for (const [name, keys] of [
-  ['library-data.csv', ['file']],
-  ['articles-data.csv', ['file']],
-  ['substack.csv', ['file-link']],
+  ['corpus-data.csv', ['file']],
 ]) {
   console.log(`=== ${name} ===`);
   const m = check(name, keys);

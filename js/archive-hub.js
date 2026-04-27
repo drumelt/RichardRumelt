@@ -13,6 +13,7 @@
     'intro',
     'papers',
     'smr',
+    'interviews',
     'cases',
     'books',
     'blogs',
@@ -57,14 +58,6 @@
   function buildCategoryHtml(slug, sectionMd) {
     var tb = splitTitleAndBody(sectionMd);
     var bodyHtml = tb.body ? marked.parse(tb.body, markedOpts()) : '';
-    if (slug === 'bibliography') {
-      return (
-        '<article class="archive-cat-card archive-cat-card--muted" aria-label="Bibliography (coming)">' +
-        '<h3 class="archive-cat-heading">' + escapeHtml(tb.title) + '</h3>' +
-        (bodyHtml ? '<div class="archive-cat-md">' + bodyHtml + '</div>' : '') +
-        '</article>'
-      );
-    }
     return (
       '<article class="archive-cat-card" data-category="' + escapeHtml(slug) + '">' +
       '<h3 class="archive-cat-heading"><a class="archive-cat-title-link" href="#' + escapeHtml(slug) + '">' +

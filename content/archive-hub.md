@@ -2,13 +2,13 @@
   The Archive - hub copy (edit this file; do not edit category HTML in the-archive.html).
 
   Rules:
-  - Use exactly these section headings (lowercase): ## intro, ## papers, ## smr, ## cases,
-    ## books, ## blogs, ## panel_of_experts, ## tech_notes, ## data, ## bibliography
+  - Use exactly these section headings (lowercase): ## intro, ## papers, ## smr, ## interviews,
+    ## cases, ## books, ## blogs, ## panel_of_experts, ## tech_notes, ## data, ## bibliography
   - ## intro is the short paragraph under "Browse by category" (Markdown allowed).
   - For every other section: first line must be **Exact Card Title** (bold).
   - Everything after that line is Markdown for the gray description (paragraphs, *italic*, links).
-  - Slug `panel_of_experts` must match the URL hash and library-data.csv category column.
-  - `bibliography` is shown as plain text (no link), like the old static page.
+  - Slug `panel_of_experts` must match the URL hash and corpus-data.csv category column.
+  - `bibliography` is clickable and lists items from the `bib` column with links from `file`.
 -->
 
 ## intro
@@ -26,6 +26,12 @@ Scholarly publications and presented papers on strategy, organization, and compe
 **Special Issue SMR**
 
 "Special Issue of the Strategic Management Review Honoring Richard Rumelt" Papers on his contributions to the field. 
+
+## interviews
+
+**Interviews**
+
+Conversations and podcast interviews with Richard Rumelt about strategy, leadership, and the ideas behind his books and papers.
 
 ## cases
 
@@ -73,4 +79,4 @@ Unpublished notes, memos, and think-pieces.
 
 **Bibliography**
 
-A consolidated bibliography is planned for a future update; there is nothing to open here yet.
+Compiled references for materials in the archive. Choose an item to open its source file.

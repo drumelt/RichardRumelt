@@ -30,45 +30,35 @@
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
     }
-    body.archive-scroll-page > .site-header,
-    body.archive-scroll-page > .hero {
+    body.archive-scroll-page > .site-header {
       flex-shrink: 0;
     }
     .hero {
       position: relative;
-      height: 220px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--color-navy);
-    }
-    .hero img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      filter: brightness(0.55);
+      height: auto;
+      overflow: visible;
+      display: block;
+      background-color: transparent;
+      padding: 1.25rem 2rem 0.25rem;
     }
     .hero-text {
-      position: relative;
+      max-width: min(94vw, 68rem);
+      margin: 0 auto;
       text-align: center;
-      color: #fff;
-      padding: 0 2rem;
+      color: var(--color-navy);
+      padding: 0;
     }
     .hero-text h1 {
       font-family: var(--font-main);
-      font-size: 3rem;
+      font-size: 2.35rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
     }
     .hero-text p {
       font-family: var(--font-main);
       font-size: 1em;
-      opacity: 0.9;
-      max-width: 560px;
+      color: var(--color-muted);
+      max-width: 640px;
       margin: 0 auto;
       line-height: 1.5;
     }
@@ -297,6 +287,18 @@
       margin-top: 0.35rem;
       line-height: 1.5;
     }
+    .lib-bib-header {
+      font-family: var(--font-main);
+      font-size: 0.88em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 1.25rem 0 0.45rem 0;
+    }
+    .lib-bib-header:first-child {
+      margin-top: 0;
+    }
 
     footer {
       background-color: var(--color-bg-subtle);
@@ -310,6 +312,16 @@
     }
 
     @media (max-width: 720px) {
+      .hero {
+        padding: 0.9rem 1rem 0.1rem;
+      }
+      .hero-text h1 {
+        font-size: 1.95rem;
+      }
+      .hero-text p {
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
       .archive-shell {
         padding: 1.25rem 1rem 2.5rem;
       }
@@ -318,7 +330,7 @@
     </head>
     <body class="archive-scroll-page">
         <header class="site-header">
-            <p class="site-banner">Richard P. Rumelt</p>
+        <p class="site-banner">Richard Rumelt</p>
         <nav class="nav-top" aria-label="Primary">
             <a href="about.html">About</a>
             <a href="index.html">Services</a>
@@ -331,14 +343,13 @@
             <a href="the-archive.html" class="active">The Archive</a>
         </nav>
         </header>
+        <div class="archive-scroll-wrap">
         <section class="hero" aria-label="Archive introduction">
-            <img src="images/card_catalog.png" alt=""/>
             <div class="hero-text">
                 <h1>The Archive</h1>
                 <p>A curated collection of Richard Rumelt's academic papers, cases, panel of experts, technical notes, and other materials.</p>
             </div>
         </section>
-        <div class="archive-scroll-wrap">
         <main class="archive-page-main" id="archive-page-main">
         <div class="archive-shell">
         <div id="archive-hub" class="archive-hub" aria-label="Archive categories">
@@ -455,7 +466,7 @@
     function categoryFromHash() {
       var h = normCell(location.hash.replace(/^#/, ''));
       if (!h || !libraryData.length) return null;
-      return libraryData.some(d => normCell(d.category) === h) ? h : null;
+      return categoryIsAvailable(h) ? h : null;
     }
 
     function parseCSV(text) {
@@ -469,6 +480,34 @@
         headers.forEach((h, i) => { obj[h] = normCell(vals[i]); });
         return obj;
       }).filter(row => row.category && row.title);
+    }
+
+    var ARCHIVE_CATEGORIES = {
+      papers: true,
+      smr: true,
+      interviews: true,
+      cases: true,
+      books: true,
+      blogs: true,
+      panel_of_experts: true,
+      tech_notes: true,
+      notes: true,
+      data: true
+    };
+
+    function bibliographyItems() {
+      return libraryData.filter(function (d) {
+        return normCell(d.bib) && normCell(d.file);
+      });
+    }
+
+    function categoryIsAvailable(category) {
+      var c = normCell(category);
+      if (!c || !libraryData.length) return false;
+      if (c === 'bibliography') return bibliographyItems().length > 0;
+      return !!ARCHIVE_CATEGORIES[c] && libraryData.some(function (d) {
+        return normCell(d.category) === c;
+      });
     }
 
     let libraryData = [];
@@ -528,16 +567,22 @@
       var list = document.getElementById('lib-list');
       var prompt = document.getElementById('lib-prompt');
 
-      var items = libraryData
-        .filter(d => normCell(d.category) === f)
-        .sort((a, b) => {
-          let aHas = a.order !== '';
-          let bHas = b.order !== '';
-          if (aHas && bHas) return Number(a.order) - Number(b.order);
-          if (aHas) return -1;
-          if (bHas) return 1;
-          return (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' });
-        });
+      var items = [];
+      if (f === 'bibliography') {
+        // Preserve CSV row order; corpus-data.csv is manually ordered for bibliography display.
+        items = bibliographyItems();
+      } else {
+        items = libraryData
+          .filter(d => normCell(d.category) === f)
+          .sort((a, b) => {
+            let aHas = a.order !== '';
+            let bHas = b.order !== '';
+            if (aHas && bHas) return Number(a.order) - Number(b.order);
+            if (aHas) return -1;
+            if (bHas) return 1;
+            return (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' });
+          });
+      }
 
       setCategoryActive(f);
 
@@ -553,10 +598,31 @@
       prompt.hidden = true;
       prompt.textContent = '';
 
+      if (f === 'bibliography') {
+        let html = '';
+        let currentType = '';
+        items.forEach(function (item) {
+          let typeLabel = normCell(item['bib-type']);
+          if (typeLabel && typeLabel !== currentType) {
+            currentType = typeLabel;
+            html += '<li class="lib-bib-header">' + escapeHtml(typeLabel) + '</li>';
+          }
+          let rawFileBib = (item.file || '').trim().replace(/\\/g, '/');
+          let hrefBib = documentViewerUrl(rawFileBib, libraryReturnUrl(f));
+          let citation = normCell(item.bib) || normCell(item.title);
+          html += '<li class="lib-item">' +
+            '<div class="lib-main"><span class="lib-title">' + escapeHtml(citation) + '</span></div>' +
+            '<a class="lib-view" href="' + escapeHtml(hrefBib) + '">View</a>' +
+            '</li>';
+        });
+        list.innerHTML = html;
+        return;
+      }
+
       list.innerHTML = items.map(item => {
         let bits = libraryItemParts(item, f);
         let meta = bits.meta;
-        let rawFile = (item.file || '').trim();
+        let rawFile = (item.file || '').trim().replace(/\\/g, '/');
         let href = '#';
         if (rawFile) {
           href = documentViewerUrl(rawFile, libraryReturnUrl(f));
@@ -575,7 +641,7 @@
     function applyHashFromUrl() {
       if (!libraryData.length) return;
       var raw = normCell(location.hash.replace(/^#/, ''));
-      if (raw && !libraryData.some(d => normCell(d.category) === raw)) {
+      if (raw && !categoryIsAvailable(raw)) {
         if (history.replaceState) {
           try {
             history.replaceState(null, '', 'the-archive.html');
@@ -599,7 +665,7 @@
         showArchiveHub(false);
         return;
       }
-      if (libraryData.some(d => normCell(d.category) === h)) {
+      if (categoryIsAvailable(h)) {
         renderList(h);
       } else {
         showArchiveHub(false);
@@ -618,7 +684,7 @@
 
     RumeltArchiveHub.load({ mdPath: 'content/archive-hub.md' }).catch(function () {});
 
-    fetch(RumeltMD.assetUrl('library-data.csv'))
+    fetch(RumeltMD.assetUrl('corpus-data.csv'))
       .then(r => {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();
@@ -641,7 +707,7 @@
         }
       })
       .catch(e => {
-        console.warn('Could not load library-data.csv:', e);
+        console.warn('Could not load corpus-data.csv:', e);
         libraryData = [];
         var shell = document.querySelector('.archive-shell');
         if (shell) shell.classList.remove('archive-shell--list');

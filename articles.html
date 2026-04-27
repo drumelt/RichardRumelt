@@ -28,7 +28,7 @@
 </head>
 <body>
   <header class="site-header">
-  <p class="site-banner">Richard P. Rumelt</p>
+  <p class="site-banner">Richard Rumelt</p>
   <nav class="nav-top" aria-label="Primary">
     <a href="about.html">About</a>
     <a href="index.html">Services</a>
@@ -98,11 +98,12 @@
       });
     }
 
-    fetch(RumeltMD.assetUrl('articles-data.csv'))
+    fetch(RumeltMD.assetUrl('corpus-data.csv'))
       .then(r => r.text())
       .then(text => {
         const articles = parseCSV(text).filter(function (a) {
-          return !csvOrderSkipsItem(a.order);
+          var category = String(a.category || '').trim().toLowerCase();
+          return category === 'article' && !csvOrderSkipsItem(a.order);
         });
         articles.sort(function (a, b) {
           return Number(a.order) - Number(b.order);
@@ -115,11 +116,15 @@
           const viewEl = a.file
             ? '<a class="article-view" href="' + escapeHtmlAttr(documentViewerUrl(a.file, 'articles.html')) + '">View</a>'
             : '<span class="article-no-link">—</span>';
+          const pubParts = [];
+          if (a.publication) pubParts.push(a.publication);
+          else if (a.journal) pubParts.push(a.journal);
+          if (a.year) pubParts.push(a.year);
+          const pubLine = pubParts.join(', ');
           li.innerHTML = viewEl
-            + '<span class="article-year">' + a.year + '</span>'
             + '<div class="article-body">'
             + '<span class="article-title">' + a.title + '</span>'
-            + '<span class="article-pub">' + a.publication + '</span>'
+            + (pubLine ? '<span class="article-pub">' + pubLine + '</span>' : '')
             + (a.description ? '<div class="article-desc">' + a.description + '</div>' : '')
             + '</div>';
           list.appendChild(li);

@@ -53,7 +53,7 @@
 </head>
 <body>
   <header class="site-header">
-  <p class="site-banner">Richard P. Rumelt</p>
+  <p class="site-banner">Richard Rumelt</p>
   <nav class="nav-top" aria-label="Primary">
     <a href="about.html">About</a>
     <a href="index.html">Services</a>
@@ -133,11 +133,12 @@
 
     var pdfIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
 
-    fetch(RumeltMD.assetUrl('substack.csv'))
+    fetch(RumeltMD.assetUrl('corpus-data.csv'))
       .then(function (r) { return r.text(); })
       .then(function (text) {
         var posts = parseCSV(text).filter(function (p) {
-          return !csvOrderSkipsItem(p.order);
+          var category = String(p.category || '').trim().toLowerCase();
+          return category === 'substack' && !csvOrderSkipsItem(p.order);
         });
         var list = document.getElementById('substack-post-list');
         var statusEl = document.getElementById('substack-csv-status');
@@ -145,7 +146,7 @@
         list.hidden = false;
 
         posts.forEach(function (p) {
-          var file = (p['file-link'] || '').trim();
+          var file = (p.file || '').trim().replace(/\\/g, '/');
           var web = (p['web-link'] || '').trim();
           var actions = '<div class="post-actions">';
           if (file) {
@@ -159,7 +160,7 @@
           var item = document.createElement('div');
           item.className = 'post-item';
           item.innerHTML =
-            '<div class="post-date">' + p.date + '</div>'
+            '<div class="post-date">' + (p.year || '') + '</div>'
             + '<div class="post-title">' + p.title + '</div>'
             + (p.description ? '<div class="post-desc">' + p.description + '</div>' : '')
             + actions;
@@ -167,7 +168,7 @@
         });
       })
       .catch(function () {
-        document.getElementById('substack-csv-status').textContent = 'Could not load posts. Serve the site over HTTP and ensure substack.csv is present.';
+        document.getElementById('substack-csv-status').textContent = 'Could not load posts. Serve the site over HTTP and ensure corpus-data.csv is present.';
       });
   </script>
 
