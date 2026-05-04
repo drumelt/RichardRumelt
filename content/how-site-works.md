@@ -34,7 +34,7 @@ Active link styling uses the `active` class on the relevant `<a>` elements in ea
 
 | HTML page | Markdown source |
 |-----------|------------------|
-| `index.html` | `content/advisory.md` |
+| `advisory.html` | `content/advisory.md` |
 | `about.html` | `content/about.md` |
 | `speaking.html` | `content/speaking.md` |
 | `strategy-foundry.html` | `content/strategy-foundry.md` |

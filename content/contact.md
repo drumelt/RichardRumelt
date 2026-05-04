@@ -4,7 +4,7 @@ title: Contact
 tagline: Inquiries for advisory engagements, speaking, or arranging  a Strategy Foundry™.
 ---
 
-## [Advisory](index.html)
+## [Advisory](advisory.html)
 
 Richard Rumelt accepts a limited number of advisory engagements. Most are arranged as projects or monthly retainers. To discuss a potential engagement, contact: [richard@rumeltadvisory.com](mailto:richard@rumeltadvisory.com)
 

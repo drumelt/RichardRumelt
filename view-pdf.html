@@ -70,7 +70,7 @@
   <header class="site-header">
     <p class="site-banner">Richard Rumelt</p>
     <div class="doc-toolbar" role="toolbar" aria-label="Document controls">
-    <a class="doc-back" id="doc-back" href="index.html" aria-label="Back to previous page">
+    <a class="doc-back" id="doc-back" href="advisory.html" aria-label="Back to previous page">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M19 12H5M12 19l-7-7 7-7"/>
       </svg>
@@ -121,7 +121,7 @@
         : window.location.search.slice(1);
       var params = new URLSearchParams(raw);
       var src = safeRelativePath(params.get('src'));
-      var from = safeRelativePath(params.get('from')) || 'index.html';
+      var from = safeRelativePath(params.get('from')) || 'advisory.html';
 
       var backEl = document.getElementById('doc-back');
       var frame = document.getElementById('doc-frame');
