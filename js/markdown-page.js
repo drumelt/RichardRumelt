@@ -1,5 +1,5 @@
 /**
- * Shared Markdown page loader (uses global `marked` from CDN).
+ * Shared Markdown page loader (uses global `marked` from js/marked.min.js).
  * RumeltMD.load({ mdPath, root, status?, heading? })
  */
 (function (window) {
@@ -24,6 +24,30 @@
       return null;
     }
   })();
+
+  function ensureMarked() {
+    if (typeof marked !== 'undefined') return Promise.resolve();
+    return new Promise(function (resolve, reject) {
+      var attempts = 0;
+      var timer = setInterval(function () {
+        if (typeof marked !== 'undefined') {
+          clearInterval(timer);
+          resolve();
+        } else if (++attempts > 200) {
+          clearInterval(timer);
+          reject(new Error('marked missing (js/marked.min.js did not load)'));
+        }
+      }, 25);
+    });
+  }
+
+  function showStatusError(status, message) {
+    if (!status) return;
+    status.style.display = '';
+    status.style.color = 'var(--color-muted, #666)';
+    status.style.fontStyle = 'italic';
+    status.textContent = message;
+  }
 
   function siteBasePath() {
     if (SITE_BASE_FROM_SCRIPT) return SITE_BASE_FROM_SCRIPT;
@@ -84,15 +108,14 @@
   }
 
   function load(opts) {
-    if (typeof marked === 'undefined') {
-      console.error('RumeltMD: marked is not loaded');
-      return Promise.reject(new Error('marked missing'));
-    }
     var root = document.querySelector(opts.root);
     if (!root) return Promise.reject(new Error('root not found: ' + opts.root));
     var status = opts.status ? document.querySelector(opts.status) : null;
 
-    return fetch(assetUrl(opts.mdPath))
+    return ensureMarked()
+      .then(function () {
+        return fetch(assetUrl(opts.mdPath));
+      })
       .then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();
@@ -106,12 +129,17 @@
         if (status) status.style.display = 'none';
       })
       .catch(function (err) {
-        console.warn(err);
-        if (status) {
-          var hint = window.location && window.location.protocol === 'file:'
-            ? 'Open this site via a local web server (e.g. python -m http.server), not as a file:// page.'
-            : 'Check the page URL, your connection, or the live deployment.';
-          status.textContent = 'Could not load ' + opts.mdPath + '. ' + hint;
+        console.warn('RumeltMD:', err);
+        var hint = window.location && window.location.protocol === 'file:'
+          ? 'Open this site via a local web server (e.g. python -m http.server), not as a file:// page.'
+          : 'Check the page URL, your connection, or the live deployment.';
+        if (err && err.message && err.message.indexOf('marked missing') !== -1) {
+          showStatusError(status, 'Could not load the page formatter (marked.js). ' + hint);
+        } else {
+          showStatusError(status, 'Could not load ' + opts.mdPath + '. ' + hint);
+        }
+        if (opts.rootHidden !== false && root.innerHTML.trim()) {
+          root.hidden = false;
         }
       });
   }
