@@ -407,7 +407,11 @@
       var q = new URLSearchParams();
       q.set('src', filePath);
       q.set('from', returnPage || 'the-archive.html');
-      return 'view-pdf.html#' + q.toString();
+      return 'view-pdf.html?' + q.toString();
+    }
+
+    function escapeAttr(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     }
 
     function stripOuterParens(s) {
@@ -612,7 +616,7 @@
           let citation = normCell(item.bib) || normCell(item.title);
           html += '<li class="lib-item">' +
             '<div class="lib-main"><span class="lib-title">' + escapeHtml(citation) + '</span></div>' +
-            '<a class="lib-view" href="' + escapeHtml(hrefBib) + '">View</a>' +
+            '<a class="lib-view" href="' + escapeAttr(hrefBib) + '">View</a>' +
             '</li>';
         });
         list.innerHTML = html;
@@ -633,7 +637,7 @@
         }
         return '<li class="lib-item">' +
           '<div class="lib-main">' + titleRow + meta + '</div>' +
-          '<a class="lib-view" href="' + escapeHtml(href) + '">View</a>' +
+          '<a class="lib-view" href="' + escapeAttr(href) + '">View</a>' +
           '</li>';
       }).join('');
     }

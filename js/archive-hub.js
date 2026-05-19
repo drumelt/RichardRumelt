@@ -68,11 +68,24 @@
     );
   }
 
+  function ensureMarked() {
+    if (typeof marked !== 'undefined') return Promise.resolve();
+    return new Promise(function (resolve, reject) {
+      var attempts = 0;
+      var timer = setInterval(function () {
+        if (typeof marked !== 'undefined') {
+          clearInterval(timer);
+          resolve();
+        } else if (++attempts > 200) {
+          clearInterval(timer);
+          reject(new Error('marked missing (js/marked.min.js did not load)'));
+        }
+      }, 25);
+    });
+  }
+
   function load(opts) {
     opts = opts || {};
-    if (typeof marked === 'undefined') {
-      return Promise.reject(new Error('marked missing'));
-    }
     if (!window.RumeltMD || typeof window.RumeltMD.parseFrontMatter !== 'function') {
       return Promise.reject(new Error('RumeltMD.parseFrontMatter missing (load markdown-page.js first)'));
     }
@@ -88,7 +101,10 @@
       window.RumeltMD && typeof window.RumeltMD.assetUrl === 'function'
         ? window.RumeltMD.assetUrl(mdPath)
         : mdPath;
-    return fetch(url)
+    return ensureMarked()
+      .then(function () {
+        return fetch(url);
+      })
       .then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.text();

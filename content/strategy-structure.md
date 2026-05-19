@@ -19,7 +19,7 @@ html_title: "Strategy, Structure, and Economic Performance — Richard Rumelt"
             <div class="supp-heading">Supplemental Materials</div>
             <div class="supp-rule"></div>
             <ul class="supp-list">
-                <li class="supp-item-row"><a class="supp-view" href="view-pdf.html?src=books_excerpts/Strategy%20Structure%20%26%20Economic%20Performance-Rumelt.pdf&amp;from=strategy-structure.html">View</a><span class="supp-item-label">Dissertation (full text)</span></li>
+                <li class="supp-item-row"><a class="supp-view" href="view-pdf.html?src=books_excerpts/Strategy_Structure_Economic_Performance-Rumelt_dissertation.pdf&amp;from=strategy-structure.html">View</a><span class="supp-item-label">Dissertation (full text)</span></li>
                 <li class="supp-item-row"><a class="supp-view" href="view-pdf.html?src=books_excerpts/Strategy_Structure_Economic_Performance.pdf&amp;from=strategy-structure.html">View</a><span class="supp-item-label">Book excerpt</span></li>
                 <li class="supp-item-row"><a class="supp-view" href="view-pdf.html?src=Data/Rumelt_Strategy_Structure%20database.pdf&amp;from=strategy-structure.html">View</a><span class="supp-item-label">Strategy-Structure Database</span></li>
                 <li class="supp-item-row"><a class="supp-view" href="view-pdf.html?src=papers/Diversification%26Profitability_SMJ82.pdf&amp;from=strategy-structure.html">View</a><span class="supp-item-label">Diversification and Profitability (follow-on paper)</span></li>

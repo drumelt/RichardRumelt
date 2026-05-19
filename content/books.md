@@ -33,13 +33,4 @@ tagline: Books on strategy, leadership, and the discipline of clear thinking.
 </div>
 </a>
 
-<a class="book-card" href="strategy-structure.html">
-<div class="book-cover"><img src="images/ssep.jpeg" alt="Strategy Structure and Economic Performance cover"></div>
-<div class="book-info">
-<div class="book-title">Strategy, Structure, and Economic Performance</div>
-<div class="book-subtitle">Harvard Business School Classics</div>
-<div class="book-year">1974</div>
-</div>
-</a>
-
 </div>
