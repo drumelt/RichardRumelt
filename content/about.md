@@ -1,6 +1,6 @@
 ---
 html_title: About — Richard Rumelt
-title: About Richard
+title: About Richard Rumelt
 tagline: Scholar, author, and advisor on the art and science of strategy.
 ---
 
