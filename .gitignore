@@ -1,1 +1,19 @@
-﻿
+﻿_pgbackup/
+_pginfo/
+notes/
+links/
+media/
+Data copy/
+Data copy 2/
+pinegrow.json
+was_index.html
+Narrative Vita.docx
+
+# Superseded by corpus-data.csv
+library-data.csv
+substack.csv
+articles-data.csv
+tech_notes.csv
+tech-notes.csv
+panel-of-experts.csv
+smr.csv
